@@ -1,559 +1,301 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的个人博客</title>
-    <style>
-        /* ========== 全局重置 & 基础样式 ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova — 现代化前端示例</title>
+  <meta name="description" content="一个使用 frontend-design 规范构建的现代化、美观的前端页面示例">
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
+  <!-- Google Fonts: Inter + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+  <!-- Lucide 图标库 -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
 
-        /* ========== 顶部导航栏 ========== */
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .site-title {
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .site-title span {
-            color: #ffd700;
-        }
-
-        .nav-list {
-            list-style: none;
-            display: flex;
-            gap: 24px;
-        }
-
-        .nav-list a {
-            font-size: 15px;
-            padding: 6px 0;
-            border-bottom: 2px solid transparent;
-            transition: border-color 0.3s, color 0.3s;
-        }
-
-        .nav-list a:hover,
-        .nav-list a.active {
-            border-bottom-color: #ffd700;
-            color: #ffd700;
-        }
-
-        /* ========== 主体容器 ========== */
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-        }
-
-        /* ========== 左侧：文章列表 ========== */
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .section-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #444;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
-            margin-bottom: 5px;
-        }
-
-        /* 文章卡片 */
-        .post-card {
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-            transition: transform 0.25s, box-shadow 0.25s;
-        }
-
-        .post-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .post-card-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            display: block;
-            background: #e8ecf1;
-        }
-
-        .post-card-body {
-            padding: 20px 24px 24px;
-        }
-
-        .post-card-category {
-            display: inline-block;
-            font-size: 12px;
-            font-weight: 600;
-            color: #667eea;
-            background: #eef1ff;
-            padding: 2px 12px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-        }
-
-        .post-card-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #222;
-        }
-
-        .post-card-title a {
-            transition: color 0.3s;
-        }
-
-        .post-card-title a:hover {
-            color: #667eea;
-        }
-
-        .post-card-excerpt {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.7;
-            margin-bottom: 14px;
-        }
-
-        .post-card-meta {
-            font-size: 13px;
-            color: #999;
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .post-card-meta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* ========== 右侧边栏 ========== */
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        /* 个人资料卡片 */
-        .profile-card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px 24px;
-            text-align: center;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-        }
-
-        .avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #667eea;
-            margin-bottom: 14px;
-            background: #e8ecf1;
-        }
-
-        .profile-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .profile-desc {
-            font-size: 14px;
-            color: #888;
-            margin-top: 6px;
-            line-height: 1.6;
-        }
-
-        .social-links {
-            margin-top: 16px;
-            display: flex;
-            justify-content: center;
-            gap: 14px;
-        }
-
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #f0f2f5;
-            font-size: 16px;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        .social-links a:hover {
-            background: #667eea;
-            color: #fff;
-        }
-
-        /* 侧栏小工具通用样式 */
-        .widget {
-            background: #fff;
-            border-radius: 12px;
-            padding: 20px 24px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-        }
-
-        .widget-title {
-            font-size: 17px;
-            font-weight: 700;
-            color: #444;
-            margin-bottom: 14px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #eef1ff;
-        }
-
-        /* 分类列表 */
-        .category-list {
-            list-style: none;
-        }
-
-        .category-list li {
-            padding: 8px 0;
-            border-bottom: 1px dashed #f0f0f0;
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            transition: color 0.3s;
-        }
-
-        .category-list li:last-child {
-            border-bottom: none;
-        }
-
-        .category-list li:hover {
-            color: #667eea;
-        }
-
-        .category-list .count {
-            color: #aaa;
-            font-size: 13px;
-        }
-
-        /* 标签云 */
-        .tag-cloud {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .tag {
-            display: inline-block;
-            font-size: 13px;
-            background: #f0f2f5;
-            padding: 4px 14px;
-            border-radius: 20px;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        .tag:hover {
-            background: #667eea;
-            color: #fff;
-        }
-
-        /* 近期文章 */
-        .recent-posts {
-            list-style: none;
-        }
-
-        .recent-posts li {
-            padding: 8px 0;
-            border-bottom: 1px dashed #f0f0f0;
-        }
-
-        .recent-posts li:last-child {
-            border-bottom: none;
-        }
-
-        .recent-posts a {
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-
-        .recent-posts a:hover {
-            color: #667eea;
-        }
-
-        .recent-posts .date {
-            display: block;
-            font-size: 12px;
-            color: #bbb;
-            margin-top: 2px;
-        }
-
-        /* ========== 页脚 ========== */
-        .footer {
-            background: #2d3436;
-            color: #b2bec3;
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-
-        .footer a {
-            color: #74b9ff;
-            transition: color 0.3s;
-        }
-
-        .footer a:hover {
-            color: #a29bfe;
-        }
-
-        /* ========== 响应式设计 ========== */
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-
-            .header-inner {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .nav-list {
-                gap: 16px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .post-card-img {
-                height: 160px;
-            }
-        }
-    </style>
+  <!-- 外链样式 -->
+  <link rel="stylesheet" href="01.css">
 </head>
 <body>
 
-    <!-- ==================== 顶部导航栏 ==================== -->
-    <header class="header">
-        <div class="header-inner">
-            <div class="site-title">My<span>Blog</span></div>
-            <nav>
-                <ul class="nav-list">
-                    <li><a href="#" class="active">首页</a></li>
-                    <li><a href="#">文章</a></li>
-                    <li><a href="#">分类</a></li>
-                    <li><a href="#">关于</a></li>
-                    <li><a href="#">留言</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <!-- ==================== 主体内容 ==================== -->
+  <!-- ===== Navigation ===== -->
+  <header class="nav" role="banner">
     <div class="container">
+      <a href="#" class="nav-logo" aria-label="Nova 首页">
+        <span class="nav-logo-icon">N</span>
+        Nova
+      </a>
 
-        <!-- ========== 左侧：文章列表 ========== -->
-        <main class="main-content">
-            <h2 class="section-title">最新文章</h2>
+      <nav aria-label="主导航">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#features">功能特性</a></li>
+          <li><a href="#stats">统计数据</a></li>
+          <li><a href="#cta">联系我们</a></li>
+          <li><a href="#footer" class="nav-cta">
+            开始使用
+            <i data-lucide="arrow-right" style="width: 1rem; height: 1rem;"></i>
+          </a></li>
+        </ul>
+      </nav>
 
-            <!-- 文章卡片 1 -->
-            <article class="post-card">
-                <!-- 文章封面占位图（用纯色替代，可替换为真实图片） -->
-                <div class="post-card-img" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7);"></div>
-                <div class="post-card-body">
-                    <span class="post-card-category">前端开发</span>
-                    <h3 class="post-card-title">
-                        <a href="#">如何用 HTML 和 CSS 快速搭建个人博客</a>
-                    </h3>
-                    <p class="post-card-excerpt">
-                        搭建一个个人博客并没有想象中那么复杂。本文将从零开始，带你一步步使用最基础的 HTML 和 CSS 构建出一个干净、响应式的博客首页，适合前端新手入门练习。
-                    </p>
-                    <div class="post-card-meta">
-                        <span>📅 2026-05-07</span>
-                        <span>👁️ 256 阅读</span>
-                        <span>💬 12 评论</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- 文章卡片 2 -->
-            <article class="post-card">
-                <div class="post-card-img" style="background: linear-gradient(135deg, #fd79a8, #e84393);"></div>
-                <div class="post-card-body">
-                    <span class="post-card-category">CSS 技巧</span>
-                    <h3 class="post-card-title">
-                        <a href="#">10 个实用的 CSS Flexbox 布局技巧</a>
-                    </h3>
-                    <p class="post-card-excerpt">
-                        Flexbox 是现代 CSS 布局中不可或缺的工具。这篇文章整理了 10 个日常开发中最常用的 Flexbox 技巧，帮助你更高效地处理各种页面布局需求。
-                    </p>
-                    <div class="post-card-meta">
-                        <span>📅 2026-05-03</span>
-                        <span>👁️ 189 阅读</span>
-                        <span>💬 8 评论</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- 文章卡片 3 -->
-            <article class="post-card">
-                <div class="post-card-img" style="background: linear-gradient(135deg, #55efc4, #00b894);"></div>
-                <div class="post-card-body">
-                    <span class="post-card-category">JavaScript</span>
-                    <h3 class="post-card-title">
-                        <a href="#">ES2026 新特性速览：让代码更简洁</a>
-                    </h3>
-                    <p class="post-card-excerpt">
-                        JavaScript 标准每年都在进化。ES2026 带来了许多实用的新特性，比如模式匹配、管道操作符等。本文将快速浏览这些新功能，并附上实用的代码示例。
-                    </p>
-                    <div class="post-card-meta">
-                        <span>📅 2026-04-28</span>
-                        <span>👁️ 312 阅读</span>
-                        <span>💬 15 评论</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- 文章卡片 4 -->
-            <article class="post-card">
-                <div class="post-card-img" style="background: linear-gradient(135deg, #74b9ff, #0984e3);"></div>
-                <div class="post-card-body">
-                    <span class="post-card-category">效率工具</span>
-                    <h3 class="post-card-title">
-                        <a href="#">我的前端开发工具链推荐（2026 版）</a>
-                    </h3>
-                    <p class="post-card-excerpt">
-                        工欲善其事，必先利其器。本文分享我个人在日常前端开发中使用的编辑器插件、调试工具、构建工具和效率软件，希望能给你的开发 workflow 带来一些启发。
-                    </p>
-                    <div class="post-card-meta">
-                        <span>📅 2026-04-20</span>
-                        <span>👁️ 421 阅读</span>
-                        <span>💬 23 评论</span>
-                    </div>
-                </div>
-            </article>
-        </main>
-
-        <!-- ========== 右侧边栏 ========== -->
-        <aside class="sidebar">
-
-            <!-- 个人资料 -->
-            <div class="profile-card">
-                <!-- 头像占位（可替换为真实头像地址） -->
-                <div class="avatar" style="background: linear-gradient(135deg, #667eea, #764ba2); margin: 0 auto 14px;"></div>
-                <h3 class="profile-name">张三</h3>
-                <p class="profile-desc">
-                    一名热爱前端开发的程序员。<br>
-                    分享技术干货与生活点滴。
-                </p>
-                <div class="social-links">
-                    <a href="#" title="GitHub">🐙</a>
-                    <a href="#" title="微博">📱</a>
-                    <a href="#" title="知乎">💡</a>
-                    <a href="#" title="邮箱">✉️</a>
-                </div>
-            </div>
-
-            <!-- 文章分类 -->
-            <div class="widget">
-                <h3 class="widget-title">文章分类</h3>
-                <ul class="category-list">
-                    <li><span>前端开发</span><span class="count">12</span></li>
-                    <li><span>CSS 技巧</span><span class="count">8</span></li>
-                    <li><span>JavaScript</span><span class="count">15</span></li>
-                    <li><span>效率工具</span><span class="count">6</span></li>
-                    <li><span>随笔杂记</span><span class="count">9</span></li>
-                </ul>
-            </div>
-
-            <!-- 标签云 -->
-            <div class="widget">
-                <h3 class="widget-title">标签云</h3>
-                <div class="tag-cloud">
-                    <span class="tag">HTML</span>
-                    <span class="tag">CSS</span>
-                    <span class="tag">JavaScript</span>
-                    <span class="tag">Flexbox</span>
-                    <span class="tag">Grid</span>
-                    <span class="tag">React</span>
-                    <span class="tag">Vue</span>
-                    <span class="tag">工具链</span>
-                    <span class="tag">性能优化</span>
-                    <span class="tag">设计模式</span>
-                </div>
-            </div>
-
-            <!-- 近期文章 -->
-            <div class="widget">
-                <h3 class="widget-title">近期文章</h3>
-                <ul class="recent-posts">
-                    <li>
-                        <a href="#">如何用 HTML 和 CSS 快速搭建个人博客</a>
-                        <span class="date">2026-05-07</span>
-                    </li>
-                    <li>
-                        <a href="#">10 个实用的 CSS Flexbox 布局技巧</a>
-                        <span class="date">2026-05-03</span>
-                    </li>
-                    <li>
-                        <a href="#">ES2026 新特性速览：让代码更简洁</a>
-                        <span class="date">2026-04-28</span>
-                    </li>
-                    <li>
-                        <a href="#">我的前端开发工具链推荐</a>
-                        <span class="date">2026-04-20</span>
-                    </li>
-                </ul>
-            </div>
-
-        </aside>
+      <button class="nav-toggle" id="navToggle" aria-label="切换导航菜单" aria-expanded="false">
+        <i data-lucide="menu" style="width: 1.5rem; height: 1.5rem;"></i>
+      </button>
     </div>
+  </header>
 
-    <!-- ==================== 页脚 ==================== -->
-    <footer class="footer">
-        <p>&copy; 2026 <a href="#">MyBlog</a> · 保留所有权利 · 由 ❤️ 与 HTML/CSS 构建</p>
-    </footer>
+  <main>
+    <!-- ===== Hero ===== -->
+    <section class="hero" id="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge reveal">
+            <span>🚀</span> 全新发布 v2.0
+          </div>
+          <h1 class="hero-title reveal reveal-delay-1">
+            构建下一代<br>Web 应用
+          </h1>
+          <p class="hero-subtitle reveal reveal-delay-2">
+            Nova 提供了一套现代化工具链，帮助你快速构建美观、高性能的 Web 应用。
+            从设计到部署，一切尽在掌握。
+          </p>
+          <div class="hero-actions reveal reveal-delay-3">
+            <a href="#cta" class="btn btn-primary">
+              免费开始使用
+              <i data-lucide="arrow-right" style="width: 1.1rem; height: 1.1rem;"></i>
+            </a>
+            <a href="#features" class="btn btn-secondary">
+              了解更多
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-image reveal reveal-delay-4">
+          <div class="hero-image-wrapper">
+            <div class="hero-image-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <line x1="3" y1="9" x2="21" y2="9"/>
+                <line x1="9" y1="21" x2="9" y2="9"/>
+              </svg>
+              <div class="hero-dots">
+                <div class="hero-dot"></div><div class="hero-dot"></div><div class="hero-dot"></div>
+                <div class="hero-dot"></div><div class="hero-dot"></div><div class="hero-dot"></div>
+                <div class="hero-dot"></div><div class="hero-dot"></div><div class="hero-dot"></div>
+                <div class="hero-dot"></div><div class="hero-dot"></div><div class="hero-dot"></div>
+                <div class="hero-dot"></div><div class="hero-dot"></div><div class="hero-dot"></div>
+                <div class="hero-dot"></div><div class="hero-dot"></div><div class="hero-dot"></div>
+                <div class="hero-dot"></div><div class="hero-dot"></div><div class="hero-dot"></div>
+                <div class="hero-dot"></div><div class="hero-dot"></div><div class="hero-dot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Social Proof ===== -->
+    <section class="social-proof" aria-label="受信任的品牌">
+      <div class="container">
+        <p class="reveal">受到全球 10,000+ 开发者的信赖</p>
+        <div class="logo-cloud reveal reveal-delay-1">
+          <div class="logo-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"/><path d="M12 3v6"/></svg>
+            StackBox
+          </div>
+          <div class="logo-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
+            OrbitKit
+          </div>
+          <div class="logo-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            TeamFlow
+          </div>
+          <div class="logo-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            PixelCraft
+          </div>
+          <div class="logo-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            DataPulse
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Features ===== -->
+    <section class="features" id="features" aria-label="功能特性">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">功能特性</span>
+          <h2 class="section-title">强大而简洁的工具集</h2>
+          <p class="section-desc">
+            我们提供了一整套开箱即用的功能，让你的开发体验更加流畅。
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <article class="feature-card reveal reveal-delay-1">
+            <div class="feature-icon">
+              <i data-lucide="zap" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <h3>极速性能</h3>
+            <p>基于最新的编译技术，构建速度提升 10 倍，热更新毫秒级响应，让开发如丝般顺滑。</p>
+          </article>
+
+          <article class="feature-card reveal reveal-delay-2">
+            <div class="feature-icon">
+              <i data-lucide="shield" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <h3>安全可靠</h3>
+            <p>内置安全防护机制，自动防范 XSS、CSRF 等常见 Web 攻击，保障应用安全。</p>
+          </article>
+
+          <article class="feature-card reveal reveal-delay-3">
+            <div class="feature-icon">
+              <i data-lucide="layers" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <h3>模块化架构</h3>
+            <p>采用插件化架构设计，按需加载，灵活扩展，轻松应对各种复杂业务场景。</p>
+          </article>
+
+          <article class="feature-card reveal reveal-delay-1">
+            <div class="feature-icon">
+              <i data-lucide="palette" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <h3>精美设计</h3>
+            <p>内置丰富的 UI 组件库，支持主题定制，快速打造品牌一致的用户界面。</p>
+          </article>
+
+          <article class="feature-card reveal reveal-delay-2">
+            <div class="feature-icon">
+              <i data-lucide="smartphone" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <h3>响应式适配</h3>
+            <p>全面支持移动端、平板和桌面端，一套代码多端运行，覆盖所有设备。</p>
+          </article>
+
+          <article class="feature-card reveal reveal-delay-3">
+            <div class="feature-icon">
+              <i data-lucide="globe" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <h3>全球化支持</h3>
+            <p>内置国际化方案，支持多语言切换，帮助你轻松拓展全球市场。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Stats ===== -->
+    <section class="stats" id="stats" aria-label="统计数据">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item reveal">
+            <span class="stat-number">99.9%</span>
+            <span class="stat-label">正常运行时间</span>
+          </div>
+          <div class="stat-item reveal reveal-delay-1">
+            <span class="stat-number">10M+</span>
+            <span class="stat-label">月活跃用户</span>
+          </div>
+          <div class="stat-item reveal reveal-delay-2">
+            <span class="stat-number">4.9★</span>
+            <span class="stat-label">用户评分</span>
+          </div>
+          <div class="stat-item reveal reveal-delay-3">
+            <span class="stat-number">190+</span>
+            <span class="stat-label">覆盖国家</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta" id="cta" aria-label="立即开始">
+      <div class="container">
+        <div class="cta-content reveal">
+          <h2>准备好开始了吗？</h2>
+          <p>加入成千上万的满意用户，开启你的现代化 Web 开发之旅。</p>
+          <a href="#" class="btn btn-primary">
+            免费开始试用
+            <i data-lucide="arrow-right" style="width: 1.1rem; height: 1.1rem;"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer" id="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo" aria-label="Nova 首页">
+            <span class="nav-logo-icon">N</span>
+            Nova
+          </a>
+          <p>构建下一代 Web 应用的现代化工具链。美观、高效、可靠。</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>产品</h4>
+          <ul>
+            <li><a href="#">功能特性</a></li>
+            <li><a href="#">定价方案</a></li>
+            <li><a href="#">更新日志</a></li>
+            <li><a href="#">API 文档</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>公司</h4>
+          <ul>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">招聘信息</a></li>
+            <li><a href="#">合作伙伴</a></li>
+            <li><a href="#">联系我们</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>法律</h4>
+          <ul>
+            <li><a href="#">隐私政策</a></li>
+            <li><a href="#">服务条款</a></li>
+            <li><a href="#">Cookie 政策</a></li>
+            <li><a href="#">知识产权</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Nova. All rights reserved.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="GitHub">
+            <i data-lucide="github" style="width: 1.25rem; height: 1.25rem;"></i>
+          </a>
+          <a href="#" aria-label="Twitter">
+            <i data-lucide="twitter" style="width: 1.25rem; height: 1.25rem;"></i>
+          </a>
+          <a href="#" aria-label="YouTube">
+            <i data-lucide="youtube" style="width: 1.25rem; height: 1.25rem;"></i>
+          </a>
+          <a href="#" aria-label="Discord">
+            <i data-lucide="message-circle" style="width: 1.25rem; height: 1.25rem;"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== Back to Top ===== -->
+  <button class="back-to-top" id="backToTop" aria-label="返回顶部">
+    <i data-lucide="chevron-up" style="width: 1.25rem; height: 1.25rem;"></i>
+  </button>
+
+  <!-- 外链脚本 -->
+  <script src="01.js" defer></script>
 
 </body>
 </html>
